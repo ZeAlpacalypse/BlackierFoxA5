@@ -46,7 +46,7 @@
     <form method="POST" action="results.php">
         <div class="inputControl">
             <div class="label">Question ID</div>
-            <input type="text" name="questionID" id="questionID" pattern="^QU-\d{3}$">
+            <input type="text" name="questionID" id="questionID" pattern="^QU-\d{3}$" required>
         </div><br>
         <div class="inputControl">
             <div class="label">Title</div>
