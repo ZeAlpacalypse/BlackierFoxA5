@@ -50,14 +50,15 @@
     $titleError = "";
     $answerError = "";
     $choiceError = "";
-    $numChoices = $_GET["numChoices"];
+    $pointsError = "";
+    $numChoices = 3;
 
     $questionID = "";
     $title = "";
     $choices = [];
     $answer = "";
     $points = "";
-    $choices = buildChoices($numChoices);
+    $choicesInput = buildChoicesHTML($numChoices);
 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -66,11 +67,12 @@
         $questionID = $_POST["questionID"];
         $title = $_POST["title"];
         $answer = $_POST["answer"];
-        $numChoices = $_POST["numChoices"];
+        $points = $_POST["points"];
 
         $questionIDError = checkQuestionID($questionID);
         $titleError = checkTitle($title);
         $answerError = checkAnswer($answer);
+        $pointsError = checkPoints($points);
         //$choiceError = checkChoices($choices);
     
         //if all data are valid, go to results
@@ -79,6 +81,9 @@
 
             $_SESSION["questionID"] = $questionID;
             $_SESSION["title"] = $title;
+            $_SESSION["choices"] = $choices;
+            $_SESSION["answer"] = $answer;
+            $_SESSION["points"] = $points;
 
             header("location: results.php");
 
@@ -89,16 +94,20 @@
     function checkQuestionID($value)
     {
         $res = "";
+        $pattern = "/QU-\d{3}/";
         if (empty($value)) {
-            $res = "Question ID cannot be empty";
+            $res = "Question ID cannot be empty!";
+        } else if (!preg_match($pattern, $value)) {
+            $res = "Question ID format must be 'QU-nnn' !";
         }
+
         return $res;
     }
     function checkTitle($value)
     {
         $res = "";
         if (empty($value)) {
-            $res = "Title cannot be empty";
+            $res = "Title cannot be empty!";
         }
         return $res;
     }
@@ -106,18 +115,37 @@
     {
         $res = "";
         if (empty($value)) {
-            $res = "Answer cannot be empty";
+            $res = "Answer cannot be empty!";
         }
 
         return $res;
     }
-    function buildChoices($number)
+    function buildChoicesArr($number)
     {
         $temp = [];
         for ($i = 0; $i < $number; $i++) {
             $temp[$i] = "<li><input name='choice" . $i . "'/></li>";
         }
         return $temp;
+    }
+    function buildChoicesHTML($number)
+    {
+        $temp = [];
+        for ($i = 0; $i < $number; $i++) {
+            $temp[$i] = "<li><input name='choice" . $i . "'/></li>";
+        }
+        return $temp;
+    }
+    function checkPoints($value)
+    {
+        $res = "";
+        $points = intval($value);
+        if (empty($value)) {
+            $res = "Points cannot be empty!";
+        } elseif ($points < 0) {
+            $res = "Points must be greater than 0!";
+        }
+        return $res;
     }
     function checkChoices($arr)
     {
@@ -149,7 +177,7 @@
         <div class="inputControl">
             <ol type="A">
                 <?php for ($i = 0; $i < $numChoices; $i++) {
-                    echo $choices[$i];
+                    echo $choicesInput[$i];
                 } ?>
             </ol>
         </div>
@@ -162,12 +190,12 @@
         </div>
         <div class="inputControl">
             <div class="label">Points</div>
-            <input id="points" name="points" type="number" min="1" max="5" value="<?php echo $points ?>" />
+            <input id="points" name="points" value="<?php echo $points ?>" />
+            <span class="error">
+                <?php echo $pointsError ?>
+            </span>
         </div>
-        <div> Number of choices
-            <input id="numChoices" name="numChoices" type="number" value="<?php echo $numChoices ?>" disabled />
-            <!--<?php echo $numChoices ?>-->
-        </div>
+
         <button type="submit">Done</button>
 
     </form>
