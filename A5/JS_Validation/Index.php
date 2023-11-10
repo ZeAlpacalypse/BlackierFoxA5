@@ -43,40 +43,43 @@
 
 <body>
     <h1>Create a Question</h1>
-    <div class="inputControl">
-        <div class="label">Question ID</div>
-        <input type="text" name="questionID" id="questionID" pattern="QN-\d\d\d">
-    </div><br>
-    <div class="inputControl">
-        <div class="label">Title</div>
-        <input type="text" name="title" id="title" required>
-    </div><br>
-    <div class="inputControl">
-        <div class="label">Number of Choices</div>
-        <select name="choices" id="choices">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-        </select>
-    </div><br>
-    <div id="container">
+    <form method="POST" action="results.php">
+        <div class="inputControl">
+            <div class="label">Question ID</div>
+            <input type="text" name="questionID" id="questionID" pattern="^QU-\d{3}$">
+        </div><br>
+        <div class="inputControl">
+            <div class="label">Title</div>
+            <input type="text" name="title" id="title" required>
+        </div><br>
+        <div class="inputControl">
+            <div class="label">Number of Choices</div>
+            <select name="choices" id="choices">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+            </select>
+        </div><br>
+        <div id="container">
 
-    </div>
-    <div class="inputControl">
-        <div class="label">Answer</div>
-        <input type="text" name="answer" id="answer" required>
-    </div><br>
-    <div class="inputControl">
-        <div class="label">Points</div>
-        <input type="numeric" name="points" id="points" required min=0>
-    </div><br>
-    <div class="inputControl">
-        <div class="label"></div>
-        <button type="submit">Submit</button>
-    </div>
+        </div>
+        <div class="inputControl">
+            <div class="label">Answer</div>
+            <input type="text" name="answer" id="answer" required>
+        </div><br>
+        <div class="inputControl">
+            <div class="label">Points</div>
+            <input type="numeric" name="points" id="points" required min=0>
+        </div><br>
+        <div class="inputControl">
+            <div class="label"></div>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+
 
 </body>
 
