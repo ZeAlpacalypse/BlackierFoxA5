@@ -64,7 +64,12 @@
             </select>
         </div><br>
         <div id="container">
-
+            <div class="inputControl" id="questions">
+                <ol type="a" id="questions">
+                    <li class="label"></li>
+                    <input type="text" required class="question" name="question0">
+                </ol>
+            </div>
         </div>
         <div class="inputControl">
             <div class="label">Answer</div>

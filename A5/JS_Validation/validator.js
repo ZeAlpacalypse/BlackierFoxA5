@@ -8,8 +8,7 @@ function buildQuestions(e) {
   let numValue = numQuestions.value;
   let int = Number(numValue);
   let htmlString = "";
-  htmlString += '<div class="inputControl"><ol type="a">';
-  for (let i = 0; i < int; i++) {
+  for (let i = 1; i < int; i++) {
     htmlString += '<li class="label"></li>';
     htmlString +=
       ' <input type="text" required class="question" name="question' +
@@ -18,10 +17,9 @@ function buildQuestions(e) {
       i +
       '"><br>';
   }
-  htmlString += "</ol></div>";
-  let container = document.querySelector("#container");
+  let container = document.querySelector("#questions");
   console.log(htmlString);
-  container.innerHTML = htmlString;
+  container.innerHTML += htmlString;
 }
 function validateInputs(e) {
   let choices = [];
