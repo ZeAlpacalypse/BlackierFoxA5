@@ -45,7 +45,7 @@
     <h1>Create a Question</h1>
     <div class="inputControl">
         <div class="label">Question ID</div>
-        <input type="text" name="questionID" id="questionID">
+        <input type="text" name="questionID" id="questionID" pattern="QN-\d\d\d">
     </div><br>
     <div class="inputControl">
         <div class="label">Title</div>
@@ -71,7 +71,7 @@
     </div><br>
     <div class="inputControl">
         <div class="label">Points</div>
-        <input type="text" name="points" id="points" required>
+        <input type="numeric" name="points" id="points" required min=0>
     </div><br>
     <div class="inputControl">
         <div class="label"></div>

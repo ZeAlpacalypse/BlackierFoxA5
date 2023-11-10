@@ -12,7 +12,7 @@ function buildQuestions(e) {
   for (let i = 0; i < int; i++) {
     htmlString += '<li class="label"></li>';
     htmlString +=
-      ' <input type="text" class="question" name="question' +
+      ' <input type="text" required class="question" name="question' +
       i +
       '" id="question' +
       i +
@@ -36,5 +36,9 @@ function validateInputs(e) {
       bool = true;
       break;
     }
+  }
+  if (!bool) {
+    answer.nextElementSibling.innerHTML = "Answer not included in the choices";
+    e.preventDefault();
   }
 }
