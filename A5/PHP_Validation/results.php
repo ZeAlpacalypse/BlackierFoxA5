@@ -11,6 +11,7 @@
     <h1>Validation Exercise - Results</h1>
     <?php
     session_start();
+    unset($_SESSION["numChoices"]);
     print_r($_SESSION);
     ?>
 </body>
