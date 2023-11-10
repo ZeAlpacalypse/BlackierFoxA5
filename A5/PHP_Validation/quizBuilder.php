@@ -109,11 +109,11 @@
     function checkQuestionID($value)
     {
         $res = "";
-        $pattern = "/QU-\d{3}/";
+        $pattern = "/^QU-\d{3}$/";
         if (empty($value)) {
             $res = "Question ID cannot be empty!";
         } else if (!preg_match($pattern, $value)) {
-            $res = "Question ID format must be 'QU-nnn' !";
+            $res = "Please match format!";
         }
 
         return $res;
