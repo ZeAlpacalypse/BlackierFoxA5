@@ -51,14 +51,17 @@
     $answerError = "";
     $choiceError = "";
     $pointsError = "";
-    $numChoices = 3;
+    if (isset($_GET["numChoices"])) {
+        $numChoices = $_GET["numChoices"];
+        $_SESSION["numChoices"] = $numChoices;
+    }
 
     $questionID = "";
     $title = "";
     $choices = [];
     $answer = "";
     $points = "";
-    $choicesInput = buildChoicesHTML($numChoices);
+    $choicesInput = buildChoicesHTML($_SESSION["numChoices"]);
 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -67,16 +70,28 @@
         $questionID = $_POST["questionID"];
         $title = $_POST["title"];
         $answer = $_POST["answer"];
+        for ($i = 0; $i < $_SESSION["numChoices"]; $i++) {
+            $choices[$i] = $_POST["choice" . $i];
+        }
         $points = $_POST["points"];
 
         $questionIDError = checkQuestionID($questionID);
         $titleError = checkTitle($title);
-        $answerError = checkAnswer($answer);
+        $choiceError = checkChoices($choices);
+        $answerError = checkAnswer($answer, $choices);
         $pointsError = checkPoints($points);
-        //$choiceError = checkChoices($choices);
-    
+
+        $errorsPresent = true;
+        for ($i = 0; $i < count($choiceError); $i++) {
+            if (!empty($choiceError[$i])) {
+                $errorsPresent = false;
+                break;
+            }
+        }
+
+
         //if all data are valid, go to results
-        if (empty($questionIDError) && empty($titleError)) {
+        if (empty($questionIDError) && empty($titleError) && $errorsPresent && empty($answerError) && empty($pointsError)) {
 
 
             $_SESSION["questionID"] = $questionID;
@@ -111,23 +126,28 @@
         }
         return $res;
     }
-    function checkAnswer($value)
+    function checkAnswer($value, $arr)
     {
         $res = "";
+        $match = false;
         if (empty($value)) {
             $res = "Answer cannot be empty!";
         }
 
+        for ($i = 0; $i < count($arr); $i++) {
+            if (strtolower($arr[$i]) == strtolower($value)) {
+                $match = true;
+                break;
+            }
+
+        }
+        if (!$match) {
+            $res = " Answer must match one of the choices!";
+        }
+
         return $res;
     }
-    function buildChoicesArr($number)
-    {
-        $temp = [];
-        for ($i = 0; $i < $number; $i++) {
-            $temp[$i] = "<li><input name='choice" . $i . "'/></li>";
-        }
-        return $temp;
-    }
+
     function buildChoicesHTML($number)
     {
         $temp = [];
@@ -152,7 +172,9 @@
         $temp = [];
         for ($i = 0; $i < count($arr); $i++) {
             if (empty($arr[$i])) {
-                $temp[$i] = "Choice " . $i . " cannot be empty";
+                $temp[$i] = "Choice cannot be empty!";
+            } else {
+                $temp[$i] = "";
             }
         }
         return $temp;
@@ -176,7 +198,11 @@
         </div>
         <div class="inputControl">
             <ol type="A">
-                <?php for ($i = 0; $i < $numChoices; $i++) {
+                <?php for ($i = 0; $i < $_SESSION["numChoices"]; $i++) {
+                    if (!empty($choiceError)) {
+                        $error = $choiceError[$i];
+                        $choicesInput[$i] .= '<span class="error">' . $error . '</span>';
+                    }
                     echo $choicesInput[$i];
                 } ?>
             </ol>
